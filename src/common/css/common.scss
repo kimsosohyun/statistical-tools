@@ -1,0 +1,199 @@
+.btn-normal {
+    font-size: 12px;
+    padding: 9px 16px;
+}
+.btn-normal:hover,.btn-normal-color:hover {
+    color: $main-active-color;
+    border-color: $main-active-color;
+}
+.btn-active-color {
+    background: $main-active-color;
+    color: white;
+    border: none;
+}
+.btn-active-color:hover{
+    background: orange;
+    color: white;
+}
+.logo-btn {
+    font-size:12px;
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    text-align: center;
+    outline: none;
+    margin: 0;
+    transition: 0.1s;
+    font-weight: 500;
+    border-radius: 2px;
+    background: $main-active-color;
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    i{
+        font-size: 12px;
+        font-weight: bold;
+    }
+    span{
+        padding-left: 6px;
+        font-size: 12px;
+    }
+}
+.logo-btn:hover {
+    background: orange;
+    color: white;
+}
+.delete {
+    background: rgb(237, 64, 20);
+}
+.delete:hover {
+    background: red;
+    color: white;
+}
+
+
+.main-content .form-group {
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 24px;
+    margin-right: 10px;
+    vertical-align: top;
+    .form-title {
+      text-align: right;
+      padding-right: 14px;
+      line-height: 32px;
+    }
+    .form-content {
+      line-height: 32px;
+      .form-select {
+        width: 100%;
+        div .active,
+        .input-text:hover {
+          border-color: $main-active-color;
+        }
+      }
+      .form-input {
+        width: 100%;
+      }
+      .datetime-picker {
+        width: 490px;
+        display: inline-block;
+        input {
+          width: 242px;
+        }
+      }
+      input:focus,
+      input:hover {
+        border-color: $main-active-color;
+      }
+    }
+  }
+.platform-table {
+    overflow: hidden;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    .ivu-table {
+        font-size: 12px;
+    }
+    .ivu-table-wrapper {
+        overflow: visible;
+    }
+    .ivu-table-fixed-body{
+        overflow: visible;
+    }
+    .ivu-table-cell {
+        button  {
+            padding: 6px 9px;
+        }
+        padding-left: 6px;
+        padding-right: 6px;
+        
+    }
+    .ivu-poptip-footer button{
+        padding: 0 7px;
+    }
+    .ivu-btn-primary {
+        color: #fff;
+        background-color: $main-active-color;
+        border-color: $main-active-color;
+    }
+    .ivu-btn-primary:hover {
+        color: #fff;
+        background-color: orange;
+        border-color:orange;
+    }
+    .ivu-btn-text:hover {
+        color: $main-active-color;
+    }
+    .ivu-icon {
+        left: 20px;
+    }
+    .ivu-table-row-hover td{
+        background:#FDF5E6;    
+    }
+    .ivu-table-hidden {
+        visibility: visible;
+        opacity: 0;
+    }
+    .table-page {
+        margin: 10px;
+        overflow: hidden;
+        div {
+        float: right;
+        .ivu-page-item-active,
+        .ivu-page-item:hover,
+        .ivu-page-next:hover,
+        .ivu-page-prev:hover
+        {
+            border-color: $main-active-color;
+        } 
+        .ivu-page-item-active a,
+        .ivu-page-item:hover a,
+        .ivu-page-next:hover a,
+        .ivu-page-prev:hover a,
+        .ivu-page-item-jump-prev:hover a,
+        .ivu-page-item-jump-next:hover a{
+            color: $main-active-color;
+        }
+        .ivu-page-disabled:hover {
+            border-color: #dcdee2;
+        }
+        .ivu-page-disabled:hover a {
+            color: #ccc;
+        }
+        }
+    }
+}
+
+.dialog-wrapper {
+    overflow: auto;
+    .overlay {
+        background: black;
+    }
+    .dialog {
+        width: 100%;
+        height: 100%;
+        .btn-group {
+            .btn {
+                width: auto;
+                height: auto;
+                font-weight: 400;
+            }
+            .btn-primary {
+                background: $main-active-color;
+                border: $main-active-color;
+            }
+            .btn:hover, .btn:focus, .btn:active {
+                border-color: $main-active-color;
+                color: $main-active-color;
+            }
+            .btn.btn-primary:hover, .btn.btn-primary:focus, .btn.btn-primary:active {
+               color: white;
+               background: orange;
+            }
+        }
+    }
+}
+
+
