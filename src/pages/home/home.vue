@@ -228,7 +228,6 @@ export default {
   },
   mounted() {
     this.$api.getHomeData().then((res) => {
-      console.log(res.data);
       this.homeData = res.data;
       this.initPage();
     });

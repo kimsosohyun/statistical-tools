@@ -75,13 +75,12 @@
 
         <div class="platform-table">
           <Table width="100%" :columns="columns1" :data="data1" :loading="tableLoading" border>
-            <template slot-scope="{ index }" slot="action">
+            <template slot-scope="{ index, row }" slot="action">
               <Poptip
                 confirm
                 placement="right"
                 title="Are you sure to delete?"
-                @on-ok="ok"
-                @on-cancel="cancel"
+                @on-ok="deleteItem(row.Id)"
                 ok-text="yes"
                 cancel-text="no"
               >
@@ -89,13 +88,21 @@
                   删除
                 </button>
               </Poptip>
-              <v-button css="btn-normal" title="详细"></v-button>
+              <v-button
+                css="btn-normal"
+                title="详细"
+                :callback="
+                  () => {
+                    showDetailDialog(index);
+                  }
+                "
+              ></v-button>
             </template>
           </Table>
           <div class="table-page">
             <div>
               <Page
-                :page-size="this.tableCount"
+                :page-size="formObj.pageSize"
                 :total="tableObj.totalCount"
                 :current="tableObj.pageNo"
                 @on-change="changePage"
@@ -108,8 +115,17 @@
     <v-dialog :dialog="graphicalDialog">
       <div ref="graphical" style="height: 350px"></div>
     </v-dialog>
-    <v-dialog :dialog="detailedDialog">
-      <div>123</div>
+    <v-dialog :dialog="detailDialog">
+      <ul class="detailList">
+        <li class="detailList-item" v-for="(item, index) in detailDialog.data" :key="index">
+          <span class="detailList-item-title">
+            {{ index + ":" }}
+          </span>
+          <p class="detailList-item-content">
+            {{ item }}
+          </p>
+        </li>
+      </ul>
     </v-dialog>
   </div>
 </template>
@@ -127,19 +143,16 @@ export default {
   },
   mounted() {
     this.getFormData();
-    this.getTableData({
-      pageNo: this.page,
-      pageSize: this.tableCount
-    });
+    this.getTableData(this.formObj);
   },
   data() {
-    const vm = this;
     return {
-      urlArr: [1, 2],
       tableObj: {},
-      page: 1,
-      tableCount: 10,
       tableLoading: true,
+      formObj: {
+        pageNo: 1,
+        pageSize: 10
+      }, //获取表格数据所需参数
       formData: {
         url: {
           val: "",
@@ -495,20 +508,35 @@ export default {
         autoHide: true,
         css: "graphical-dialog"
       },
-      detailedDialog: {
+      detailDialog: {
         title: "详细信息",
         show: false,
-        hasOK: true,
-        hasCancel: true,
+        hasOK: false,
+        hasCancel: false,
         outside: true,
         autoHide: true,
-        css: "detailed-dialog"
+        css: "detail-dialog",
+        data: []
       }
     };
   },
   methods: {
-    ok() {},
-    cancel() {},
+    deleteItem(id) {
+      this.$api.deleteFormData(id).then((res) => {
+        if (res.data.err_code === 0) {
+          this.getTableData(this.formObj);
+          this.$Message.success({
+            content: res.data.message
+          });
+        }
+        else {
+          this.$Message.error({
+            background: true,
+            content: res.data.message
+          });
+        }
+      });
+    },
     showGraphicalDialog() {
       let myGraphicalChart,
         graphicalOption = createOptions(this.data1);
@@ -527,7 +555,6 @@ export default {
     getTableData(obj) {
       this.tableLoading = true;
       this.$api.getTableData(obj).then((res) => {
-        // console.log(res.data);
         if (res.data.err_code === 0) {
           this.tableObj = res.data;
           this.data1 = this.tableObj.dataList;
@@ -541,11 +568,8 @@ export default {
       });
     },
     changePage(val) {
-      this.page = val;
-      this.getTableData({
-        pageNo: this.page,
-        pageSize: this.tableCount
-      });
+      this.formObj.pageNo = val;
+      this.getTableData(this.formObj);
     },
     getFormData() {
       this.$api.getFormData().then((res) => {
@@ -577,7 +601,29 @@ export default {
     },
     search() {
       const { formData } = this,
-        keyArr = Object.keys(formData);
+        keyArr = Object.keys(formData),
+        { formObj } = this,
+        str1 = "createTime[0]",
+        str2 = "createTime[1]";
+
+      formObj.pageNo = 1;
+      keyArr.forEach((item) => {
+        if (item === "timeSeg") {
+          formObj[str1] = formData[item].val[0] || "";
+          formObj[str2] = formData[item].val[1] || "";
+        } else if (formData[item].val === "none" || !formData[item].val) {
+          formObj[item] = "";
+        } else {
+          formObj[item] = formData[item].val;
+        }
+      });
+      this.getTableData(formObj);
+    },
+
+    showDetailDialog(index) {
+      const { detailDialog, data1 } = this;
+      detailDialog.data = this.data1[index];
+      this.detailDialog.show = true;
     }
   }
 };
@@ -590,6 +636,46 @@ export default {
   min-width: 300px;
   .content {
     margin: 20px !important;
+  }
+}
+.main-content .detail-dialog {
+  z-index: 9;
+  width: 80%;
+  max-width: 740px;
+  text-align: left;
+  min-width: 480px;
+  .dialog-title {
+    text-align: center;
+    height: 40px;
+    padding: 10px 0;
+  }
+  .content {
+    margin: 2px 20px !important;
+    .detailList {
+      padding-bottom: 6px;
+    }
+    .detailList-item {
+      font-size: 12px;
+      height: auto;
+      line-height: 20px;
+      overflow: hidden;
+      .detailList-item-title {
+        display: block;
+        width: 30%;
+        text-align: right;
+        float: left;
+      }
+      .detailList-item-content {
+        text-indent: 8px;
+        display: block;
+        width: 70%;
+        text-align: left;
+        float: left;
+      }
+    }
+    .detailList-item:nth-of-type(2n + 1) {
+      background: rgb(243, 243, 243);
+    }
   }
 }
 .model {

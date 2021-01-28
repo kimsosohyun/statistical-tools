@@ -14,7 +14,28 @@ const interfaces = {
     },
     getFormData() {
         return axios.get(`${base.wxp}/api/getAllFilterData`)
-    }
+    },
+    deleteFormData(id) {
+        return axios.get(`${base.wxp}/api/delItem`,{
+            params:{
+                id
+            }
+        })
+    },
+    getAgntIdList(obj) {
+        return axios.get(`${base.wxp}/api/getAgentIdList`, {
+            params: obj
+        })
+    },
+    insertAgentId(obj) {
+        return axios.post(`${base.wxp}/api/insertAgentId`,obj)
+    },
+    updateAgengId(obj) {
+        return axios.post(`${base.wxp}/api/updateAgengId`,obj)
+    },
+    login(obj) {
+        return axios.post(`${base.wxp}/api/login`,obj)
+    },
     
 }
 export default interfaces;

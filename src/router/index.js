@@ -7,6 +7,7 @@ import Home  from '../pages/home/home.vue'
 import Platform  from '../pages/platform/platform.vue'
 import Classify  from '../pages/platform/classify.vue'
 import Model  from '../pages/platform/model.vue'
+import Login from '../pages/login/login.vue'
 
 export default new Router({
   routes: [
@@ -20,6 +21,7 @@ export default new Router({
           component:Home,
           title:"首页",
           meta:{
+            // ignoreLogin: true,
             pathInfo:"首页",
             icon:"iconfont icon-shouye"
           }
@@ -45,6 +47,7 @@ export default new Router({
             {
               path:"/platform/classify",
               component:Classify,
+              loginIgnore: true,
               title:"id管理",
               meta:{
                 pathInfo:"统计 / id管理",
@@ -55,5 +58,9 @@ export default new Router({
         },
       ]
     },
+    {
+      path: '/login',   
+      component: Login
+    }
   ]
 })

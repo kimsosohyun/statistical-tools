@@ -13,6 +13,16 @@
    return Y + M + D + h + m + s;
  }
  /**
+  * 将时间戳转换为20201216180119数字类型
+  * @param {Number} timestamp -时间戳
+  */
+ function timeStampToNumber(timestamp) {
+   const time = conversionTimestamp(timestamp),
+     number = time.match(/\d+/g).join("");
+
+     return number;
+ }
+ /**
   * 根据接口数据生成图表配置
   * @param {Array} data -接口返回数组数据
   * @return {Object} options -创建图表所需配置
@@ -150,26 +160,29 @@
   * @param {Array} data -接口返回数据值
   * @return {Array} -经过整合后的数据
   */
-  function toArr(key, data) {
-    let arr = [];
-    data.forEach((item) => {
-      key === "createTime" ? arr.push(conversionTimestamp(Number(item[key]))) : arr.push(item[key]);
-    });
-    return arr.reverse();
-  }
+ function toArr(key, data) {
+   let arr = [];
+   data.forEach((item) => {
+     key === "createTime" ? arr.push(conversionTimestamp(Number(item[key]))) : arr.push(item[key]);
+   });
+   return arr.reverse();
+ }
 
-  function toSelectArr(arr) {
-    let newArr = [];
-    arr.forEach(item => {
-      let obj = {};
-      obj.title = item;
-      obj.value = item;
-      newArr.push(obj);
-    })
-    return newArr;
-  }
+ function toSelectArr(arr) {
+   let newArr = [];
+   arr.forEach(item => {
+     let obj = {};
+     obj.title = item;
+     obj.value = item;
+     newArr.push(obj);
+   })
+   return newArr;
+ }
 
 
-  export {
-    createOptions, conversionTimestamp, toSelectArr
-  }
+ export {
+   createOptions,
+   conversionTimestamp,
+   toSelectArr,
+   timeStampToNumber
+ }
