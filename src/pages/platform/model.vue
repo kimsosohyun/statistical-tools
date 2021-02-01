@@ -74,7 +74,7 @@
         </div>
 
         <div class="platform-table">
-          <Table width="100%" :columns="columns1" :data="data1" :loading="tableLoading" border>
+          <Table width="100%" :columns="columns1" :data="data1" :loading="tableLoading" border :row-class-name="rowClassName">
             <template slot-scope="{ index, row }" slot="action">
               <Poptip
                 confirm
@@ -121,7 +121,7 @@
           <span class="detailList-item-title">
             {{ index + ":" }}
           </span>
-          <p class="detailList-item-content">
+          <p class="detailList-item-content" :class="{markByred: index === 'errorContent' && item != '[]'}">
             {{ item }}
           </p>
         </li>
@@ -623,7 +623,15 @@ export default {
     showDetailDialog(index) {
       const { detailDialog, data1 } = this;
       detailDialog.data = this.data1[index];
+      detailDialog.data.createTime = conversionTimestamp(Number(detailDialog.data.createTime));
       this.detailDialog.show = true;
+
+    },
+    //为报错的table列表mark红色
+    rowClassName(row, index) {
+      if(row.errorTotal) {
+        return "ivu-table-row-error";
+      }
     }
   }
 };
@@ -666,7 +674,9 @@ export default {
         float: left;
       }
       .detailList-item-content {
-        text-indent: 8px;
+        padding-left: 8px;
+        word-break:break-all;
+        white-space: normal;
         display: block;
         width: 70%;
         text-align: left;
@@ -738,5 +748,8 @@ export default {
       }
     }
   }
+}
+.markByred {
+  color: red;
 }
 </style>

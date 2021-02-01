@@ -47,7 +47,6 @@ export default new Router({
             {
               path:"/platform/classify",
               component:Classify,
-              loginIgnore: true,
               title:"id管理",
               meta:{
                 pathInfo:"统计 / id管理",
